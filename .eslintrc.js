@@ -18,5 +18,6 @@ module.exports = {
   // add your custom rules here
   rules: {
     "comma-dangle": ["warn", "always-multiline"],
+    "max-len": ["warn", { "code": 120 }],
   },
 }

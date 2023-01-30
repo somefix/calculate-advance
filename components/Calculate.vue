@@ -1,21 +1,26 @@
 <template>
-  <div class="lg:grid lg:grid-cols-3 lg:gap-6">
-    <div class="lg:col-span-1 py-10 px-5">
+  <div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:col-span-1">
       <div class="px-4 sm:px-0">
         <h3 class="text-lg font-medium leading-6 text-gray-900">Profile</h3>
         <p class="mt-1 text-sm text-gray-600">This information will be displayed publicly so be careful what you share.</p>
       </div>
     </div>
-    <div class="lg:col-span-2 py-10 px-5">
-      <form>
+    <div class="mt-5 md:col-span-2 md:mt-0">
+      <form action="#" method="POST">
         <div class="shadow sm:overflow-hidden sm:rounded-md">
           <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
-            <div class="grid grid-cols-3 gap-6">
-              <div class="col-span-3 sm:col-span-2">
-                <label for="company-website" class="block text-sm font-medium text-gray-700">Website</label>
+            <div class="grid grid-cols-2 gap-6">
+              <div class="col-span-2 sm:col-span-1">
+                <label for="company-website" class="block text-sm font-medium text-gray-700">Год</label>
                 <div class="mt-1 flex rounded-md shadow-sm">
-                  <span class="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">http://</span>
-                  <input id="company-website" type="text" name="company-website" class="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="www.example.com">
+                  <input id="company-website" type="number" name="company-website" class="block w-full flex-1 rounded-none rounded-l-md rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="2023">
+                </div>
+              </div>
+              <div class="col-span-2 sm:col-span-1">
+                <label for="company-website" class="block text-sm font-medium text-gray-700">Зарплата</label>
+                <div class="mt-1 flex rounded-md shadow-sm">
+                  <input id="company-website" type="number" name="company-website" class="block w-full flex-1 rounded-none rounded-l-md rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="50000">
                 </div>
               </div>
             </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-sky-50">
-    <div class="container">
+    <div class="container min-h-screen px-5 py-10">
       <transition name="home">
         <Nuxt/>
       </transition>
