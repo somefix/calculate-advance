@@ -29,6 +29,10 @@
 
 
 <script>
+import divide from "lodash/divide";
+import multiply from "lodash/multiply";
+import difference from "lodash/difference";
+
 import CALENDAR from '@/services/mock/calendaries/2023.json'
 
 export default {
@@ -51,20 +55,25 @@ export default {
         const { days, month } = item;
         const holidays = days.split(',').map((day) => parseInt(day, 10));
         const holidaysCount = holidays.length;
-        const workdaysCount =
-          new Date(this.year, month, 0).getDate() - holidaysCount;
-        const payday = this.getPayDay(holidays, this.payday);
-        const advanceDay = this.getPayDay(holidays, this.advanceDay);
+        const lastDayOfMonth = new Date(this.year, month, 0).getDate();
+        const allDaysInMonth = new Array(lastDayOfMonth).fill(0).map((item, idx) => ++idx);
+        const workdays = difference(allDaysInMonth, holidays);
+        const workdaysCount = workdays.length;
+        const paydays = [this.payday, this.advanceDay].map((payday) => this.getPayDay(holidays, payday))
+        const dayCost = divide(this.salary, workdaysCount);
+        const firstHalfWorkDays = workdays.filter((day) => day <= 15);
+        const secondHalfWorkDays = workdays.filter((day) => day > 15);
+        const paydaysSalary = [firstHalfWorkDays, secondHalfWorkDays].map((days) => multiply(multiply(dayCost, days.length), 0.87));
 
         item = {
           month,
           year: this.year,
-          holidays: holidaysCount,
-          workdays: {
-            firstHalf: 0,
-            secondHalf: 0,
-          },
-          paydays: [payday, advanceDay],
+          holidays,
+          workdays,
+          holidaysCount,
+          workdaysCount,
+          paydays,
+          paydaysSalary,
         };
 
         return item;
