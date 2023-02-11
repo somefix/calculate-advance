@@ -1,0 +1,34 @@
+name: deploy
+on:
+  push:
+    branches:
+      # When someone push to `master` branch
+      - master
+
+jobs:
+  deploy-to-jino:
+    name: Deploy to Jino hosting
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: '18'
+
+      - name: 🔨 Build Project
+        run: |
+          npm install
+          npm run build
+          npm run generate
+
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.3.2
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASS }}
+          local-dir: ./.output/public/
+          server-dir: ${{ secrets.FTP_DIRECTORY }}
