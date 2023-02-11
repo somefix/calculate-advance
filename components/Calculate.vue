@@ -1,26 +1,66 @@
 <template>
   <div class="md:grid md:grid-cols-3 md:gap-6">
     <div class="md:col-span-1">
-      <div class="px-4 sm:px-0">
+      <div class="px-4 sm:px-0 sticky top-0">
         <h3 class="text-lg font-medium leading-6 text-gray-900">Profile</h3>
         <p class="mt-1 text-sm text-gray-600">This information will be displayed publicly so be careful what you share.</p>
       </div>
     </div>
+
     <div class="mt-5 md:col-span-2 md:mt-0">
       <div class="shadow sm:overflow-hidden sm:rounded-md">
-        <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
-          <div class="grid grid-cols-2 gap-6">
-            <div class="col-span-2 sm:col-span-1">
-              <label for="company-website" class="block text-sm font-medium text-gray-700">Зарплата</label>
+        <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+          <div class="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
+            <div class="ml-4 mt-4">
+              <label for="company-website" class="block text-sm font-medium text-gray-700">Оклад</label>
               <div class="mt-1 flex rounded-md shadow-sm">
-                <input id="company-website" v-model="salary" type="number" name="company-website" class="block w-full flex-1 rounded-none rounded-l-md rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="50000">
+                <input id="company-website" v-model="salary" type="number" name="company-website" class="block w-full flex-1 rounded-none rounded-l-md rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Введите сумму">
               </div>
               <p id="email-description" class="mt-2 text-sm text-gray-500">До уплаты подоходного налога</p>
             </div>
+            <div class="ml-4 mt-4 flex-shrink-0">
+              <button type="button" class="relative inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" @click="calculate">Рассчитать</button>
+            </div>
           </div>
         </div>
-        <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-          <button class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" @click="calculate">Рассчитать</button>
+
+        <div v-if="data" class="space-y-6 bg-white px-4 py-0 md:p-6 md:py-5">
+          <div class="flex flex-col">
+            <div class="-my-2 -mx-4 sm:-mx-6 lg:-mx-8">
+              <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                <div class="shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                  <table class="min-w-full divide-y divide-gray-300">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th scope="col" class="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6">Дата</th>
+                        <th scope="col" class="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6">Сумма</th>
+                        <th scope="col" class="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6">
+                          <span class="sr-only">Добавить в календарь</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                      <tr v-for="(item, idx) in sortedData" :key="idx">
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-6">{{ item.date }}</td>
+                        <td class="whitespace-nowrap px-3 py-4 text-right text-sm text-gray-500">{{ getPrice(item.salary) }}</td>
+                        <td class="whitespace-nowrap py-4 pl-3 pr-4 sm:pr-6 flex justify-end">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-indigo-600 hover:text-indigo-900 cursor-pointer" @click="addToCalendar(item.date)">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                          </svg>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th scope="row" colspan="1" class="hidden py-4 pl-4 pr-3 text-right text-sm font-semibold text-gray-900 sm:table-cell sm:pl-6">Итого</th>
+                        <th class="whitespace-nowrap px-3 py-4 text-right text-sm font-semibold text-gray-900">{{ getPrice(totalSalary) }}</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -29,9 +69,17 @@
 
 
 <script>
+import map from "lodash/map";
+import sortBy from "lodash/sortBy";
+import reduce from "lodash/reduce";
+import concat from "lodash/concat";
 import divide from "lodash/divide";
+import groupBy from "lodash/groupBy";
 import multiply from "lodash/multiply";
+import mapValues from "lodash/mapValues";
 import difference from "lodash/difference";
+import { google } from "calendar-link";
+import formatters from "@/utils/formatters"
 
 import CALENDAR from '@/services/mock/calendaries/2023.json'
 
@@ -45,12 +93,28 @@ export default {
     data: null,
   }),
   computed: {
-    url: (vm) =>
-      `https://raw.githubusercontent.com/xmlcalendar/xmlcalendar.github.io/main/data/ru/${vm.year}/calendar.json`,
     calendarData: () => CALENDAR,
+    groupedByMonth: (vm) => mapValues(groupBy(vm.data, 'month'), (item) => item?.[0]) ?? {},
+    calculatedSalary: (vm) => mapValues(vm.groupedByMonth, (item) => {
+      const { firstHalfWorkDays, dayCost: currentMonthDayCost, year, month, paydays } = item;
+      const { secondHalfWorkDays = [], dayCost: previousMonthDayCost = 0 } = vm.groupedByMonth?.[month - 1] ?? {};
+      const salary = multiply(multiply(previousMonthDayCost, secondHalfWorkDays.length), 0.87);
+      const prepaid = multiply(multiply(currentMonthDayCost, firstHalfWorkDays.length), 0.87);
+      const paydaysSalary = map([salary, prepaid], (item, idx) => ({ date: vm.formatDate(new Date(year, month - 1, paydays?.[idx])), salary: item }));
+
+      return { ...item, paydays: paydaysSalary };
+    }),
+    paydays: (vm) => reduce(vm.calculatedSalary, (res, val) => {
+      res = concat(res, val.paydays);
+
+      return res;
+    }, []),
+    sortedData: (vm) => sortBy(vm.paydays, (item) => new Date(item.date)),
+    totalSalary: (vm) => reduce(vm.paydays, (sum, { salary = 0 }) => sum + salary, 0),
   },
   methods: {
     calculate() {
+      this.data = null;
       this.data = this.calendarData.months?.map((item) => {
         const { days, month } = item;
         const holidays = days.split(',').map((day) => parseInt(day, 10));
@@ -63,7 +127,6 @@ export default {
         const dayCost = divide(this.salary, workdaysCount);
         const firstHalfWorkDays = workdays.filter((day) => day <= 15);
         const secondHalfWorkDays = workdays.filter((day) => day > 15);
-        const paydaysSalary = [firstHalfWorkDays, secondHalfWorkDays].map((days) => multiply(multiply(dayCost, days.length), 0.87));
 
         item = {
           month,
@@ -73,11 +136,13 @@ export default {
           holidaysCount,
           workdaysCount,
           paydays,
-          paydaysSalary,
+          dayCost,
+          firstHalfWorkDays,
+          secondHalfWorkDays,
         };
 
         return item;
-      })
+      });
     },
     getPayDay(holidays, payday) {
       if (payday < 1) {
@@ -88,6 +153,29 @@ export default {
       }
 
       return payday
+    },
+    formatDate(date) {
+      let dd = date.getDate();
+      let mm = date.getMonth() + 1;
+      let yy = date.getFullYear() % 100;
+
+      if (dd < 10) dd = '0' + dd;
+      if (mm < 10) mm = '0' + mm;
+      if (yy < 10) yy = '0' + yy;
+
+      return dd + '.' + mm + '.' + yy;
+    },
+    addToCalendar(date) {
+      const event = {
+        title: "Зарплата",
+        start: date,
+        allDay: true,
+      };
+
+      google(event);
+    },
+    getPrice(numeric) {
+      return formatters.price(numeric, { currency: true })
     },
   },
 }
