@@ -2,8 +2,21 @@
   <div class="md:grid md:grid-cols-3 md:gap-6">
     <div class="md:col-span-1">
       <div class="px-4 sm:px-0 sticky top-0">
-        <h3 class="text-lg font-medium leading-6 text-gray-900">Profile</h3>
-        <p class="mt-1 text-sm text-gray-600">This information will be displayed publicly so be careful what you share.</p>
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Как рассчитывается аванс?</h3>
+        <p class="mt-1 text-sm text-gray-600">Наш калькулятор рассчитывает размер и дату аванса и зарплаты в 2023 году.</p>
+        <p class="mt-1 text-sm text-gray-600 mb-4">Расчет происходит по следующим формулам:</p>
+        <p class="mt-1 text-sm text-gray-600 mb-2 italic">
+          Аванс = (оклад/количество рабочих дней) × количество отработанных дней за 1-ю половину месяца − 13%
+        </p>
+        <p class="mt-1 text-sm text-gray-600 mb-4 italic">
+          Зарплата = (оклад/количество рабочих дней) × количество отработанных дней за 2-ю половину месяца − 13%
+        </p>
+        <p class="mt-1 text-sm text-gray-600 mb-7">Для упрощения точные даты выплат зарплаты и аванса зафиксировали на 10 и 25 числа соответственно. Если дата выплаты попадает на выходной или праздничный день, то она смещается на предыдущий рабочий день.</p>
+        <p class="mt-1 text-sm text-gray-600 mb-4 italic underline">Пример</p>
+        <p class="mt-1 text-sm text-gray-600 mb-4 italic">Количество рабочих дней в январе 2023 года — 17, оклад инженера Петрова И. И. составляет 40 000 руб. в месяц. За вторую половину месяца Петров И. И. отработал 12 дней. Таким образом, ему должна быть выплачена зарплата 10 февраля в сумме:</p>
+        <p class="mt-1 text-sm text-gray-600 mb-4 italic">З = (40 000 руб. / 17 дн.) × 12 дн. - 13% = 24 564.71 руб.</p>
+        <p class="mt-1 text-sm text-gray-600 mb-4 italic">Количество рабочих дней в феврале 2023 года — 17. За первую половину месяца Петров И. И. отработал 11 дней. Таким образом, ему должен быть выплачен аванс 21 числа в сумме:</p>
+        <p class="mt-1 text-sm text-gray-600 mb-4 italic">А = (40 000 руб. / 17 дн.) × 11 дн. - 13% = 22 517.65 руб.</p>
       </div>
     </div>
 
@@ -14,7 +27,7 @@
             <div class="ml-4 mt-4">
               <label for="company-website" class="block text-sm font-medium text-gray-700">Оклад</label>
               <div class="mt-1 flex rounded-md shadow-sm">
-                <input id="company-website" v-model="salary" type="number" name="company-website" class="block w-full flex-1 rounded-none rounded-l-md rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Введите сумму">
+                <input id="company-website" v-model="salary" @keyup.enter="calculate" type="number" name="company-website" class="block w-full flex-1 rounded-none rounded-l-md rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Введите сумму">
               </div>
               <p id="email-description" class="mt-2 text-sm text-gray-500">До уплаты подоходного налога</p>
             </div>
@@ -66,7 +79,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 import map from "lodash/map";
