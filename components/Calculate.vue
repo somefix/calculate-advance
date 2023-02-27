@@ -87,6 +87,7 @@ import reduce from "lodash/reduce";
 import concat from "lodash/concat";
 import divide from "lodash/divide";
 import groupBy from "lodash/groupBy";
+import isEmpty from "lodash/isEmpty";
 import multiply from "lodash/multiply";
 import mapValues from "lodash/mapValues";
 import difference from "lodash/difference";
@@ -129,7 +130,10 @@ export default {
       this.data = null;
       this.data = this.calendarData.months?.map((item) => {
         const { days, month } = item;
-        const holidays = days.split(',').map((day) => parseInt(day, 10));
+        const holidays = days
+          .split(',')
+          .filter((day) => isEmpty(day.match(/\*/))) // Исключаем сокращенные дни
+          .map((day) => parseInt(day, 10));
         const holidaysCount = holidays.length;
         const lastDayOfMonth = new Date(this.year, month, 0).getDate();
         const allDaysInMonth = new Array(lastDayOfMonth).fill(0).map((item, idx) => ++idx);
