@@ -27,7 +27,7 @@
             <div class="ml-4 mt-4">
               <label for="company-website" class="block text-sm font-medium text-gray-700">Оклад</label>
               <div class="mt-1 flex rounded-md shadow-sm">
-                <input id="company-website" v-model="salary" @keyup.enter="calculate" type="number" name="company-website" class="block w-full flex-1 rounded-none rounded-l-md rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Введите сумму">
+                <input id="company-website" v-mask="'### ### ### ###'" v-model="salary" @keyup.enter="calculate" type="text" name="company-website" class="block w-full flex-1 rounded-none rounded-l-md rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Введите сумму">
               </div>
               <p id="email-description" class="mt-2 text-sm text-gray-500">До уплаты подоходного налога</p>
             </div>
@@ -86,9 +86,11 @@ import sortBy from "lodash/sortBy";
 import reduce from "lodash/reduce";
 import concat from "lodash/concat";
 import divide from "lodash/divide";
+import replace from "lodash/replace";
 import groupBy from "lodash/groupBy";
 import isEmpty from "lodash/isEmpty";
 import multiply from "lodash/multiply";
+import parseInt from "lodash/parseInt";
 import mapValues from "lodash/mapValues";
 import difference from "lodash/difference";
 import { google } from "calendar-link";
@@ -140,7 +142,7 @@ export default {
         const workdays = difference(allDaysInMonth, holidays);
         const workdaysCount = workdays.length;
         const paydays = [this.payday, this.advanceDay].map((payday) => this.getPayDay(holidays, payday))
-        const dayCost = divide(this.salary, workdaysCount);
+        const dayCost = divide(parseInt(replace(this.salary, ' ', '')), workdaysCount);
         const firstHalfWorkDays = workdays.filter((day) => day <= 15);
         const secondHalfWorkDays = workdays.filter((day) => day > 15);
 
