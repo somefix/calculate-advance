@@ -1,12 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    css: ['~/assets/css/main.css'],
-    postcss: {
-        plugins: {
-            tailwindcss: {},
-            autoprefixer: {},
-        },
-    },
+  // @ts-ignore
+  css: ['~/assets/css/main.css'],
+  postcss: {
+      plugins: {
+          tailwindcss: {},
+          autoprefixer: {},
+      },
+  },
   app: {
     head: {
       title: 'Рассчитать Аванс',
@@ -19,5 +20,8 @@ export default defineNuxtConfig({
         { hid: 'description', name: 'description', content: 'Рассчитать аванс онлайн' },
       ],
     },
-  }
+  },
+  plugins: [
+    '~/plugins/vueTheMask.ts'
+  ],
 })
