@@ -27,7 +27,7 @@
             <div class="ml-4 mt-4">
               <label for="company-website" class="block text-sm font-medium text-gray-700">Оклад</label>
               <div class="mt-1 flex rounded-md shadow-sm">
-                <input id="company-website" v-mask="'### ### ### ###'" v-model="salary" @keyup.enter="calculate" type="text" name="company-website" class="block w-full flex-1 rounded-none rounded-l-md rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Введите сумму">
+                <input id="company-website" v-money="modeyDirectiveOptions" v-model="salary" @keyup.enter="calculate" type="text" name="company-website" class="block w-full flex-1 rounded-none rounded-l-md rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Введите сумму">
               </div>
               <p id="email-description" class="mt-2 text-sm text-gray-500">До уплаты подоходного налога</p>
             </div>
@@ -106,6 +106,21 @@ export default {
     payday: 10,
     advanceDay: 25,
     data: null,
+    modeyDirectiveOptions: {
+      prefix: '',
+      suffix: '',
+      thousands: ' ',
+      decimal: '.',
+      precision: 0,
+      disableNegative: false,
+      disabled: false,
+      min: null,
+      max: null,
+      allowBlank: false,
+      minimumNumberOfCharacters: 0,
+      shouldRound: true,
+      focusOnRight: false,
+    },
   }),
   computed: {
     calendarData: () => CALENDAR,

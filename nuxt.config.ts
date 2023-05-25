@@ -22,6 +22,6 @@ export default defineNuxtConfig({
     },
   },
   plugins: [
-    '~/plugins/vueTheMask.ts'
+    '~/plugins/money3.ts'
   ],
 })
