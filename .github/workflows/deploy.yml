@@ -13,14 +13,14 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v3
 
-      - name: Use Node.js 18
+      - name: Use Node.js 16
         uses: actions/setup-node@v3.5.1
         with:
-          node-version: '18'
+          node-version: '16'
 
       - name: 🔨 Build Project
         run: |
-          npm install
+          yarn install
           npm run build
           npm run generate
 
