@@ -27,15 +27,14 @@ export default defineNuxtConfig({
   modules: [
     '@artmizu/yandex-metrika-nuxt',
   ],
-  runtimeConfig: {
-    yandexMetrika: {
-      id: '94492513',
-      initParams: {
-        webvisor:true,
-        clickmap:true,
-        trackLinks:true,
-        accurateTrackBounce:true,
-      },
+  yandexMetrika: {
+    // @ts-ignore
+    id: '94492513',
+    initParams: {
+      webvisor:true,
+      clickmap:true,
+      trackLinks:true,
+      accurateTrackBounce:true,
     },
   },
 })
