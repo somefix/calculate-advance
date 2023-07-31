@@ -38,14 +38,4 @@ export default defineNuxtConfig({
       },
     },
   },
-  yandexMetrika: {
-    // @ts-ignore
-    id: '94492513',
-    initParams: {
-      webvisor:true,
-      clickmap:true,
-      trackLinks:true,
-      accurateTrackBounce:true,
-    },
-  },
 })
