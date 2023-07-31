@@ -24,4 +24,18 @@ export default defineNuxtConfig({
   plugins: [
     '~/plugins/money3.ts'
   ],
+  modules: [
+    '@artmizu/yandex-metrika-nuxt',
+  ],
+  publicRuntimeConfig: {
+    yandexMetrika: {
+      id: '94492513',
+      initParams: {
+        webvisor:true,
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+      },
+    },
+  },
 })

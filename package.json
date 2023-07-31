@@ -18,6 +18,7 @@
     "tailwindcss": "^3.2.6"
   },
   "dependencies": {
+    "@artmizu/yandex-metrika-nuxt": "^1.0.2",
     "calendar-link": "^2.4.0",
     "v-money3": "^3.24.0"
   }
