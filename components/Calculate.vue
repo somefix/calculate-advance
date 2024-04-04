@@ -96,7 +96,7 @@ import difference from "lodash/difference";
 import { google } from "calendar-link";
 import formatters from "@/utils/formatters"
 
-import CALENDAR from '@/services/mock/calendaries/2023.json'
+import CALENDAR from '@/services/mock/calendaries/2024.json'
 
 export default {
   name: "Calculate",
