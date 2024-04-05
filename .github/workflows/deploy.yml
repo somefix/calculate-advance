@@ -33,28 +33,34 @@ jobs:
           echo ENV_VAR_2=${{ secrets.FTP_DIRECTORY }} >> .env
           echo ENV_VAR_2=$BASE_URL >> .env
           cat .env
-          echo "$SECRETS_VARS"
+          echo "$SECRETS_VARS" > "secrets.txt"
 
-      - name: 🚚 Get latest code
-        uses: actions/checkout@v4
-
-      - name: Use Node.js 19
-        uses: actions/setup-node@v4
+      - uses: actions/upload-artifact@v3
+        name: Upload Artifact
         with:
-          node-version: '19'
-          cache: 'yarn'
+          name: SecretsVariables
+          path: "secrets.txt"
 
-      - name: 🔨 Build Project
-        run: |
-          yarn install
-          npm run build
-          npm run generate
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build_artifact
-          path: ./.output/public/
-          retention-days: 1
+#      - name: 🚚 Get latest code
+#        uses: actions/checkout@v4
+#
+#      - name: Use Node.js 19
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: '19'
+#          cache: 'yarn'
+#
+#      - name: 🔨 Build Project
+#        run: |
+#          yarn install
+#          npm run build
+#          npm run generate
+#      - name: Upload build artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: build_artifact
+#          path: ./.output/public/
+#          retention-days: 1
 #  deploy-to-dev:
 #    name: Deploy to dev
 #    runs-on: ubuntu-latest
