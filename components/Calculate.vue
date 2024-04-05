@@ -1,8 +1,8 @@
 <template>
-  <div class="md:grid md:grid-cols-3 md:gap-6">
-    <div class="md:col-span-1">
-      <div class="px-4 sm:px-0 sticky top-0">
-        <h3 class="text-lg font-medium leading-6 text-gray-900">Как рассчитывается аванс?</h3>
+  <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="col-span-1 order-2 md:-order-1">
+      <div class="px-4 sm:px-0 md:sticky top-5">
+        <h3 class="text-lg font-medium leading-6 text-gray-900 my-5">Как рассчитывается зарплата?</h3>
         <p class="mt-1 text-sm text-gray-600">Наш калькулятор рассчитывает размер и дату аванса и зарплаты в 2023 году.</p>
         <p class="mt-1 text-sm text-gray-600 mb-4">Расчет происходит по следующим формулам:</p>
         <p class="mt-1 text-sm text-gray-600 mb-2 italic">
@@ -20,21 +20,22 @@
       </div>
     </div>
 
-    <div class="mt-5 md:col-span-2 md:mt-0">
-      <div class="shadow sm:overflow-hidden sm:rounded-md">
-        <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
-          <div class="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
-            <div class="ml-4 mt-4">
-              <label for="company-website" class="block text-sm font-medium text-gray-700">Оклад</label>
-              <div class="mt-1 flex rounded-md shadow-sm">
-                <input id="company-website" v-money="modeyDirectiveOptions" v-model="salary" @keyup.enter="calculate" type="text" name="company-website" class="block w-full flex-1 rounded-none rounded-l-md rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Введите сумму">
-              </div>
-              <p id="email-description" class="mt-2 text-sm text-gray-500">До уплаты подоходного налога</p>
-            </div>
-            <div class="ml-4 mt-4 flex-shrink-0">
-              <button type="button" class="relative inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" @click="calculate">Рассчитать</button>
-            </div>
+    <div class="sm:col-span-1 md:col-span-2">
+
+      <div class="bg-white overflow-hidden shadow rounded-md">
+        <div class="border-b border-gray-200 px-4 py-5 sm:p-6">
+          <h1 class="text-2xl mb-5 font-medium leading-6 text-gray-900">Калькулятор зарплаты</h1>
+          <h3 class="text-base font-medium leading-6 text-gray-900">Оклад</h3>
+          <div class="mt-2 max-w-xl text-sm text-gray-500">
+            <p>Введите сумму оклада до вычета подоходного налога</p>
           </div>
+          <form class="mt-3 sm:flex sm:items-center">
+            <div class="w-full sm:max-w-xs">
+              <label for="salary" class="sr-only">Оклад</label>
+              <input v-money="modeyDirectiveOptions" v-model="salary" @keyup.enter="calculate" type="text" name="salary" id="salary" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="40 000">
+            </div>
+            <button type="submit" class="mt-3 inline-flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:ml-3 sm:mt-0 sm:w-auto" @click.prevent.stop="calculate">Рассчитать</button>
+          </form>
         </div>
 
         <div v-if="data" class="space-y-6 bg-white px-4 py-0 md:p-6 md:py-5">
@@ -44,30 +45,30 @@
                 <div class="shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
                   <table class="min-w-full divide-y divide-gray-300">
                     <thead class="bg-gray-50">
-                      <tr>
-                        <th scope="col" class="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6">Дата</th>
-                        <th scope="col" class="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6">Сумма</th>
-                        <th scope="col" class="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6">
-                          <span class="sr-only">Добавить в календарь</span>
-                        </th>
-                      </tr>
+                    <tr>
+                      <th scope="col" class="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6">Дата</th>
+                      <th scope="col" class="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6">Сумма</th>
+                      <th scope="col" class="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6">
+                        <span class="sr-only">Добавить в календарь</span>
+                      </th>
+                    </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
-                      <tr v-for="(item, idx) in sortedData" :key="idx">
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-6">{{ item.date }}</td>
-                        <td class="whitespace-nowrap px-3 py-4 text-right text-sm text-gray-500">{{ getPrice(item.salary) }}</td>
-                        <td class="whitespace-nowrap py-4 pl-3 pr-4 sm:pr-6 flex justify-end">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-indigo-600 hover:text-indigo-900 cursor-pointer" @click="addToCalendar(item.date)">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-                          </svg>
-                        </td>
-                      </tr>
+                    <tr v-for="(item, idx) in sortedData" :key="idx">
+                      <td class="whitespace-nowrap py-4 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-6">{{ item.date }}</td>
+                      <td class="whitespace-nowrap px-3 py-4 text-right text-sm text-gray-500">{{ getPrice(item.salary) }}</td>
+                      <td class="whitespace-nowrap py-4 pl-3 pr-4 sm:pr-6 flex justify-end">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-indigo-600 hover:text-indigo-900 cursor-pointer" @click="addToCalendar(item.date)">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+                        </svg>
+                      </td>
+                    </tr>
                     </tbody>
                     <tfoot>
-                      <tr>
-                        <th scope="row" colspan="1" class="hidden py-4 pl-4 pr-3 text-right text-sm font-semibold text-gray-900 sm:table-cell sm:pl-6">Итого</th>
-                        <th class="whitespace-nowrap px-3 py-4 text-right text-sm font-semibold text-gray-900">{{ getPrice(totalSalary) }}</th>
-                      </tr>
+                    <tr>
+                      <th scope="row" colspan="1" class="hidden py-4 pl-4 pr-3 text-right text-sm font-semibold text-gray-900 sm:table-cell sm:pl-6">Итого</th>
+                      <th class="whitespace-nowrap px-3 py-4 text-right text-sm font-semibold text-gray-900">{{ getPrice(totalSalary) }}</th>
+                    </tr>
                     </tfoot>
                   </table>
                 </div>
@@ -141,6 +142,20 @@ export default {
     }, []),
     sortedData: (vm) => sortBy(vm.paydays, (item) => new Date(item.date)),
     totalSalary: (vm) => reduce(vm.paydays, (sum, { salary = 0 }) => sum + salary, 0),
+    routeSalary: {
+      get() {
+        return this.$route.query?.salary ?? 0;
+      },
+      set(salary) {
+        this.$route.query.salary = salary;
+      },
+    },
+  },
+  mounted() {
+    console.log('mounted', this.$route.query);
+    if (this.routeSalary) {
+      this.salary = this.routeSalary;
+    }
   },
   methods: {
     calculate() {
@@ -213,7 +228,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>

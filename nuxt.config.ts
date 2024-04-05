@@ -10,14 +10,14 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      title: 'Рассчитать Аванс',
+      title: 'Paymeter',
       htmlAttrs: {
         lang: 'ru'
       },
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { hid: 'description', name: 'description', content: 'Рассчитать аванс онлайн' },
+        { hid: 'description', name: 'description', content: 'Калькулятор зарплаты онлайн' },
       ],
     },
     baseURL: process.env?.BASE_URL ?? '/',
