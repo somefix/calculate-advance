@@ -20,6 +20,7 @@ export default defineNuxtConfig({
         { hid: 'description', name: 'description', content: 'Рассчитать аванс онлайн' },
       ],
     },
+    baseURL: process.env?.BASE_URL ?? '/',
   },
   plugins: [
     '~/plugins/money3.ts'

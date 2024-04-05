@@ -2,33 +2,72 @@ name: deploy
 on:
   push:
     branches:
-      # When someone push to `master` branch
-      - master
+      # When someone push to `main` branch
+      - main
+      - dev
 
 jobs:
-  deploy-to-jino:
-    name: Deploy to Jino hosting
+  build:
+    name: Build project
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Get latest code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js 19
-        uses: actions/setup-node@v3.5.1
+        uses: actions/setup-node@v4
         with:
           node-version: '19'
+          cache: 'yarn'
 
       - name: 🔨 Build Project
         run: |
           yarn install
           npm run build
           npm run generate
-
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_artifact
+          path: ./.output/public/
+          retention-days: 1
+  deploy-to-dev:
+    name: Deploy to dev
+    runs-on: ubuntu-latest
+    needs: build
+    environment: dev
+    if: github.ref_name == 'dev' || github.base_ref == 'dev'
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build_artifact
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.2
         with:
+          protocol: ftps
+          dangerous-clean-slate: true
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASS }}
-          local-dir: ./.output/public/
+          server-dir: ${{ secrets.FTP_DIRECTORY }}
+  deploy-to-production:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    needs: build
+    environment: main
+    if: github.ref_name == 'main' || github.base_ref == 'main'
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build_artifact
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.3.2
+        with:
+          protocol: ftps
+          dangerous-clean-slate: true
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASS }}
           server-dir: ${{ secrets.FTP_DIRECTORY }}
