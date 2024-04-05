@@ -34,14 +34,14 @@ jobs:
           echo $SECRETS_VARS > secrets.txt
         shell: bash
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         name: Upload Artifact
         with:
           name: Env
           path: .env
           retention-days: 5
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         name: Upload Artifact
         with:
           name: SecretsVariables
