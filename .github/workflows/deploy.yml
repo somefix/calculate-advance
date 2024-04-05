@@ -25,19 +25,28 @@ jobs:
           yarn install
           npm run build
           npm run generate
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_artifact
+          path: ./.output/public/
   deploy-to-dev:
     name: Deploy to dev
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: build
     environment: dev
     steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build_artifact
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.2
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASS }}
-          local-dir: ./.output/public/
+          local-dir: ./
           server-dir: ${{ secrets.FTP_DIRECTORY }}
 #  deploy-to-production:
 #    name: Deploy to production
