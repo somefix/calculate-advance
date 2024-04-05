@@ -27,13 +27,15 @@ jobs:
         run: |
           echo ${{ github.ref_name || github.base_ref }}
           echo $BASE_URL
-          echo $BASE_URL | sed 's/./& /g'
-          echo ${{ secrets.FTP_DIRECTORY }} | sed 's/./& /g'
           touch .env
           echo ENV_VAR_2=${{ secrets.FTP_DIRECTORY }} >> .env
           echo ENV_VAR_2=$BASE_URL >> .env
           cat .env
           echo "$SECRETS_VARS" > "secrets.txt"
+          echo "FTP_DIRECTORY" | base64
+          echo ${{secrets.FTP_DIRECTORY}} | sed 's/./& /g'
+          echo $BASE_URL | sed 's/./& /g'
+        shell: bash
 
       - uses: actions/upload-artifact@v3
         name: Upload Artifact
