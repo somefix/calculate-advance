@@ -102,7 +102,7 @@ export default {
   name: "Calculate",
   data: () => ({
     salary: null,
-    year: 2023,
+    year: 2024,
     payday: 10,
     advanceDay: 25,
     data: null,
