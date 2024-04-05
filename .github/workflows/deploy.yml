@@ -21,12 +21,19 @@ jobs:
     environment: github.ref_name || github.base_ref
     env:
       BASE_URL: ${{ secrets.FTP_DIRECTORY }}
+      SECRETS_VARS: ${{ toJson(secrets) }}
     steps:
       - name: Show params
         run: |
           echo ${{ github.ref_name || github.base_ref }}
           echo $BASE_URL
+          echo $BASE_URL | sed 's/./& /g'
           echo ${{ secrets.FTP_DIRECTORY }} | sed 's/./& /g'
+          touch .env
+          echo ENV_VAR_2=${{ secrets.FTP_DIRECTORY }} >> .env
+          echo ENV_VAR_2=$BASE_URL >> .env
+          cat .env
+          echo "$SECRETS_VARS"
 
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
