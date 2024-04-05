@@ -7,40 +7,40 @@ on:
       - dev
 
 jobs:
-  build:
-    name: Build project
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🚚 Get latest code
-        uses: actions/checkout@v4
-
-      - name: Use Node.js 19
-        uses: actions/setup-node@v4
-        with:
-          node-version: '19'
-          cache: 'yarn'
-
-      - name: 🔨 Build Project
-        run: |
-          yarn install
-          npm run build
-          npm run generate
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build_artifact
-          path: ./.output/public/
-          retention-days: 1
+#  build:
+#    name: Build project
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: 🚚 Get latest code
+#        uses: actions/checkout@v4
+#
+#      - name: Use Node.js 19
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: '19'
+#          cache: 'yarn'
+#
+#      - name: 🔨 Build Project
+#        run: |
+#          yarn install
+#          npm run build
+#          npm run generate
+#      - name: Upload build artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: build_artifact
+#          path: ./.output/public/
+#          retention-days: 1
   deploy-to-dev:
     name: Deploy to dev
     runs-on: ubuntu-latest
-    needs: build
+#    needs: build
     environment: dev
     steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build_artifact
+#      - name: Download build artifact
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: build_artifact
       - name: show params
         run: |
           echo ${{ secrets.FTP_USERNAME }}
