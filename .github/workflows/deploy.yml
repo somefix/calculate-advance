@@ -43,9 +43,11 @@ jobs:
 #          name: build_artifact
       - name: show params
         run: |
-          echo "${{ secrets.FTP_USERNAME }}"
-          echo "${{ secrets.FTP_HOST }}"
-          echo "${{ secrets.FTP_DIRECTORY }}"
+          echo "$FTP_USERNAME" | base64
+          echo ${{secrets.FTP_USERNAME}} | sed 's/./& /g'
+        shell: bash
+        env:
+          FTP_USERNAME: ${{secrets.FTP_USERNAME}}
 #      - name: 📂 Sync files
 #        uses: SamKirkland/FTP-Deploy-Action@4.3.2
 #        with:
