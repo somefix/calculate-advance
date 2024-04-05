@@ -7,8 +7,8 @@ on:
       - dev
 
 jobs:
-  deploy-to-jino:
-    name: Deploy to Jino hosting
+  build:
+    name: Build project
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Get latest code
@@ -24,7 +24,11 @@ jobs:
           yarn install
           npm run build
           npm run generate
-
+  deploy-to-dev:
+    name: Deploy to dev
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.2
         with:
@@ -33,3 +37,16 @@ jobs:
           password: ${{ secrets.FTP_PASS }}
           local-dir: ./.output/public/
           server-dir: ${{ secrets.FTP_DIRECTORY }}
+#  deploy-to-production:
+#    name: Deploy to production
+#    runs-on: ubuntu-latest
+#    environment: main
+#    steps:
+#      - name: 📂 Sync files
+#        uses: SamKirkland/FTP-Deploy-Action@4.3.2
+#        with:
+#          server: ${{ secrets.FTP_HOST }}
+#          username: ${{ secrets.FTP_USERNAME }}
+#          password: ${{ secrets.FTP_PASS }}
+#          local-dir: ./.output/public/
+#          server-dir: ${{ secrets.FTP_DIRECTORY }}
