@@ -25,6 +25,13 @@ jobs:
           node-version: '19'
           cache: 'yarn'
 
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo BASE_URL=${{ secrets.FTP_DIRECTORY }} >> .env
+          echo YANDEX_METRIKA_ID=${{ secrets.YANDEX_METRIKA_ID }} >> .env
+          cat .env
+
       - name: 🔨 Build Project
         run: |
           yarn install

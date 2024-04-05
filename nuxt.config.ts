@@ -30,7 +30,7 @@ export default defineNuxtConfig({
   ],
   yandexMetrika: {
     // @ts-ignore
-    id: '94492513',
+    id: process.env.YANDEX_METRIKA_ID,
     initParams: {
       webvisor:true,
       clickmap:true,
