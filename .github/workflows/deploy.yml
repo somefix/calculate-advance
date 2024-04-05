@@ -18,7 +18,7 @@ jobs:
   build:
     name: Build project
     runs-on: ubuntu-latest
-    environment: github.ref_name || github.base_ref
+    environment: dev
     env:
       BASE_URL: ${{ secrets.FTP_DIRECTORY }}
       SECRETS_VARS: ${{ toJson(secrets) }}
@@ -26,27 +26,14 @@ jobs:
       - name: Show params
         run: |
           echo ${{ github.ref_name || github.base_ref }}
-          echo $BASE_URL
-          touch .env
-          echo ENV_VAR_2=${{ secrets.FTP_DIRECTORY }} >> .env
-          echo ENV_VAR_2=$BASE_URL >> .env
-          cat .env
           echo $SECRETS_VARS > secrets.txt
-        shell: bash
 
-      - uses: actions/upload-artifact@v4
-        name: Upload Artifact
-        with:
-          name: Env
-          path: .env
-          retention-days: 5
-
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         name: Upload Artifact
         with:
           name: SecretsVariables
           path: secrets.txt
-          retention-days: 5
+          retention-days: 1
 
 #      - name: 🚚 Get latest code
 #        uses: actions/checkout@v4
