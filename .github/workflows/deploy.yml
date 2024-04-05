@@ -21,20 +21,7 @@ jobs:
     environment: ${{ github.ref_name || github.base_ref }}
     env:
       BASE_URL: ${{ secrets.FTP_DIRECTORY }}
-      SECRETS_VARS: ${{ toJson(secrets) }}
     steps:
-      - name: Show params
-        run: |
-          echo ${{ github.ref_name || github.base_ref }}
-          echo $SECRETS_VARS > secrets.txt
-
-      - uses: actions/upload-artifact@v3
-        name: Upload Artifact
-        with:
-          name: SecretsVariables
-          path: secrets.txt
-          retention-days: 1
-
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
@@ -55,32 +42,11 @@ jobs:
           name: build_artifact
           path: ./.output/public/
           retention-days: 1
-  deploy-to-dev:
-    name: Deploy to dev
+  deploy-to-stand:
+    name: Deploy to stand
     runs-on: ubuntu-latest
     needs: build
-    environment: dev
-    if: github.ref_name == 'dev' || github.base_ref == 'dev'
-    steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build_artifact
-      - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@4.3.2
-        with:
-          protocol: ftps
-          dangerous-clean-slate: true
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASS }}
-          server-dir: ${{ secrets.FTP_DIRECTORY }}
-  deploy-to-production:
-    name: Deploy to production
-    runs-on: ubuntu-latest
-    needs: build
-    environment: main
-    if: github.ref_name == 'main' || github.base_ref == 'main'
+    environment: ${{ github.ref_name || github.base_ref }}
     steps:
       - name: Download build artifact
         uses: actions/download-artifact@v4
