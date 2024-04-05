@@ -22,6 +22,12 @@ jobs:
     env:
       BASE_URL: ${{ secrets.FTP_DIRECTORY }}
     steps:
+      - name: Show params
+        run: |
+          echo ${{ github.ref_name || github.base_ref }}
+          echo $BASE_URL
+          echo ${{ secrets.FTP_DIRECTORY }} | sed 's/./& /g'
+
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
@@ -42,26 +48,26 @@ jobs:
           name: build_artifact
           path: ./.output/public/
           retention-days: 1
-  deploy-to-dev:
-    name: Deploy to dev
-    runs-on: ubuntu-latest
-    needs: build
-    environment: dev
-    if: github.ref_name == 'dev' || github.base_ref == 'dev'
-    steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build_artifact
-      - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@4.3.2
-        with:
-          protocol: ftps
-          dangerous-clean-slate: true
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASS }}
-          server-dir: ${{ secrets.FTP_DIRECTORY }}
+#  deploy-to-dev:
+#    name: Deploy to dev
+#    runs-on: ubuntu-latest
+#    needs: build
+#    environment: dev
+#    if: github.ref_name == 'dev' || github.base_ref == 'dev'
+#    steps:
+#      - name: Download build artifact
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: build_artifact
+#      - name: 📂 Sync files
+#        uses: SamKirkland/FTP-Deploy-Action@4.3.2
+#        with:
+#          protocol: ftps
+#          dangerous-clean-slate: true
+#          server: ${{ secrets.FTP_HOST }}
+#          username: ${{ secrets.FTP_USERNAME }}
+#          password: ${{ secrets.FTP_PASS }}
+#          server-dir: ${{ secrets.FTP_DIRECTORY }}
   deploy-to-production:
     name: Deploy to production
     runs-on: ubuntu-latest
