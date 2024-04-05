@@ -18,7 +18,7 @@ jobs:
   build:
     name: Build project
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ github.ref_name || github.base_ref }}
     env:
       BASE_URL: ${{ secrets.FTP_DIRECTORY }}
       SECRETS_VARS: ${{ toJson(secrets) }}
