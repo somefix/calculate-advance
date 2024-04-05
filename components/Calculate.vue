@@ -21,7 +21,6 @@
     </div>
 
     <div class="sm:col-span-1 md:col-span-2">
-
       <div class="bg-white overflow-hidden shadow rounded-md">
         <div class="border-b border-gray-200 px-4 py-5 sm:p-6">
           <h1 class="text-2xl mb-5 font-medium leading-6 text-gray-900">Калькулятор зарплаты</h1>
