@@ -11,10 +11,16 @@ on:
       - main
       - dev
 
+env:
+  YANDEX_METRIKA_ID: ${{ secrets.YANDEX_METRIKA_ID }}
+
 jobs:
   build:
     name: Build project
     runs-on: ubuntu-latest
+    environment: github.ref_name || github.base_ref
+    env:
+      BASE_URL: ${{ secrets.FTP_DIRECTORY }}
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
@@ -24,13 +30,6 @@ jobs:
         with:
           node-version: '19'
           cache: 'yarn'
-
-      - name: 'Create env file'
-        run: |
-          touch .env
-          echo BASE_URL=${{ secrets.FTP_DIRECTORY }} >> .env
-          echo YANDEX_METRIKA_ID=${{ secrets.YANDEX_METRIKA_ID }} >> .env
-          cat .env
 
       - name: 🔨 Build Project
         run: |
