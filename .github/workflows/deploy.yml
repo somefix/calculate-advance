@@ -25,6 +25,13 @@ jobs:
           node-version: '19'
           cache: 'yarn'
 
+      - name: 'Create env file'
+        run: |
+          touch .env
+          echo BASE_URL=${{ secrets.FTP_DIRECTORY }} >> .env
+          echo YANDEX_METRIKA_ID=${{ secrets.YANDEX_METRIKA_ID }} >> .env
+          cat .env
+
       - name: 🔨 Build Project
         run: |
           yarn install
@@ -43,12 +50,6 @@ jobs:
     environment: dev
     if: github.ref_name == 'dev' || github.base_ref == 'dev'
     steps:
-      - name: 'Create env file'
-        run: |
-          touch .env
-          echo BASE_URL=${{ secrets.FTP_DIRECTORY }} >> .env
-          echo YANDEX_METRIKA_ID=${{ secrets.YANDEX_METRIKA_ID }} >> .env
-          cat .env
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
