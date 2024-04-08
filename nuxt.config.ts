@@ -29,7 +29,7 @@ export default defineNuxtConfig({
   ],
   modules: [
     '@artmizu/yandex-metrika-nuxt',
-    'nuxt-gtag'
+    'nuxt-gtag',
   ],
   yandexMetrika: {
     // @ts-ignore
