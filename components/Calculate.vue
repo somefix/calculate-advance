@@ -3,7 +3,7 @@
     <div class="col-span-1 order-2 md:-order-1">
       <div class="px-4 sm:px-0 md:sticky top-5">
         <h3 class="text-lg font-medium leading-6 text-gray-900 my-5">Как рассчитывается зарплата?</h3>
-        <p class="mt-1 text-sm text-gray-600">Наш калькулятор рассчитывает размер и дату аванса и зарплаты в 2023 году.</p>
+        <p class="mt-1 text-sm text-gray-600">Наш калькулятор рассчитывает размер и дату аванса и зарплаты в {{ currentYear }} году.</p>
         <p class="mt-1 text-sm text-gray-600 mb-4">Расчет происходит по следующим формулам:</p>
         <p class="mt-1 text-sm text-gray-600 mb-2 italic">
           Аванс = (оклад/количество рабочих дней) × количество отработанных дней за 1-ю половину месяца − 13%
@@ -57,7 +57,7 @@
                       <td class="whitespace-nowrap py-4 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-6">{{ item.date }}</td>
                       <td class="whitespace-nowrap px-3 py-4 text-right text-sm text-gray-500">{{ getPrice(item.salary) }}</td>
                       <td class="whitespace-nowrap py-4 pl-3 pr-4 sm:pr-6 flex justify-end">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-indigo-600 hover:text-indigo-900 cursor-pointer" @click="addToCalendar(item.date)">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-indigo-600 hover:text-indigo-900 cursor-pointer" @click="addToCalendar(item.date, getPrice(item.salary))">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
                         </svg>
                       </td>
@@ -123,6 +123,7 @@ export default {
     },
   }),
   computed: {
+    currentYear: () => new Date().getFullYear(),
     calendarData: () => CALENDAR,
     groupedByMonth: (vm) => mapValues(groupBy(vm.data, 'month'), (item) => item?.[0]) ?? {},
     calculatedSalary: (vm) => mapValues(vm.groupedByMonth, (item) => {
@@ -151,13 +152,15 @@ export default {
     },
   },
   mounted() {
-    console.log('mounted', this.$route.query);
     if (this.routeSalary) {
       this.salary = this.routeSalary;
     }
   },
   methods: {
     calculate() {
+      if (!this.salary) {
+        this.salary = 40000
+      }
       this.data = null;
       this.data = this.calendarData.months?.map((item) => {
         const { days, month } = item;
@@ -212,14 +215,20 @@ export default {
 
       return dd + '.' + mm + '.' + yy;
     },
-    addToCalendar(date) {
+    addToCalendar(date, salary) {
       const event = {
-        title: "Зарплата",
+        title: `Зарплата - ${salary}`,
         start: date,
         allDay: true,
+        description: salary,
       };
 
       google(event);
+      let a = document.createElement("a");
+      a.style.display = "none";
+      a.target = "_blank";
+      a.href = google(event);
+      a.click();
     },
     getPrice(numeric) {
       return formatters.price(numeric, { currency: true })
